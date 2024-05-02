@@ -47,7 +47,7 @@ public class Character_Equipment : BaseInitializer
 
         if (bodyPart != null)
         {
-            if(bodyPart._equippedItem._id == ItemToEquip._id)
+            if(bodyPart._equippedItem != null && bodyPart._equippedItem._id == ItemToEquip._id)
             {
                 bodyPart._equippedItem = null;
                 bodyPart.animatorBodyPart.runtimeAnimatorController = null;

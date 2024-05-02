@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _id: 1
   _itemIcon: {fileID: 447010389, guid: 8ecf22480c0d51946a144a2f302625c6, type: 3}
+  shopPrice: 35
   _equipmentType_enum: 1
   _bodyPartSlot: 0
   _equipmentAnimator: {fileID: 22100000, guid: dbce206a9401925449583af8c70d0886, type: 2}

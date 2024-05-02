@@ -29,10 +29,12 @@ public class LogicController : BaseInitializer
     /// Player Controller
     /// </summary>
     [SerializeField] BaseCharacter _playerCharacter;
-    public BaseCharacter Player
+    public BasePlayer Player
     {
-        get { return _playerCharacter; }
+        get { return _playerCharacter as BasePlayer; }
     }
+
+    [SerializeField] List<BaseCharacter> _allnpcs = new List<BaseCharacter>();
 
     public UIController _uiController;
 
@@ -56,6 +58,11 @@ public class LogicController : BaseInitializer
 
         yield return StartCoroutine(_playerCharacter.Cor_Initialize());
         yield return StartCoroutine(_uiController.Cor_Initialize());
+
+        for (int i = 0; i < _allnpcs.Count; i++)
+        {
+            yield return StartCoroutine(_allnpcs[i].Cor_Initialize());
+        }
 
 
         yield return StartCoroutine(base.Cor_Initialize());

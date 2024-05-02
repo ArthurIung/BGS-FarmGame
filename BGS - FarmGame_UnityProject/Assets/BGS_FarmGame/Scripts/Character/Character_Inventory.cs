@@ -9,8 +9,6 @@ public class Character_Inventory : BaseInitializer
     [System.Serializable]
     public class Cell 
     {
-        public int _id;
-        public string _Name;
         public int _amount;
         public Scriptable_Items _itemReference;
     }
@@ -28,28 +26,14 @@ public class Character_Inventory : BaseInitializer
         yield return StartCoroutine(base.Cor_Initialize());
     }
 
-
-    #region Temporário
-
-    private void Update()
+    public void InsertItem(Scriptable_Items _i)
     {
-        if (LogicController.Instance == null) return;
+        Cell newCell = new Cell();
+        newCell._itemReference = Instantiate(_i);
 
-        //if(Keyboard.current.eKey.isPressed)
-        //{
-        //    _base.Equipment.Equip(_inventory[0]);
-        //}
-
-        //if(Keyboard.current.rKey.isPressed)
-        //{
-        //    _base.Equipment.Unnequip(Character_Equipment.EquipmentBodyPart.BodyPart.Head);
-        //}
-
-
-
+        _inventory.Add(newCell);
     }
 
-    #endregion
 
 
 }

@@ -107,6 +107,15 @@ public partial class @PlayerControl: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Shop"",
+                    ""type"": ""Button"",
+                    ""id"": ""0f35b76d-6c7b-40be-a038-fbf8b8e59cc9"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -118,6 +127,17 @@ public partial class @PlayerControl: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""Inventory"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""d19aea44-5ee8-49c3-b59f-9a93e712c64b"",
+                    ""path"": ""<Keyboard>/e"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Shop"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -132,6 +152,7 @@ public partial class @PlayerControl: IInputActionCollection2, IDisposable
         // Interface
         m_Interface = asset.FindActionMap("Interface", throwIfNotFound: true);
         m_Interface_Inventory = m_Interface.FindAction("Inventory", throwIfNotFound: true);
+        m_Interface_Shop = m_Interface.FindAction("Shop", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -240,11 +261,13 @@ public partial class @PlayerControl: IInputActionCollection2, IDisposable
     private readonly InputActionMap m_Interface;
     private List<IInterfaceActions> m_InterfaceActionsCallbackInterfaces = new List<IInterfaceActions>();
     private readonly InputAction m_Interface_Inventory;
+    private readonly InputAction m_Interface_Shop;
     public struct InterfaceActions
     {
         private @PlayerControl m_Wrapper;
         public InterfaceActions(@PlayerControl wrapper) { m_Wrapper = wrapper; }
         public InputAction @Inventory => m_Wrapper.m_Interface_Inventory;
+        public InputAction @Shop => m_Wrapper.m_Interface_Shop;
         public InputActionMap Get() { return m_Wrapper.m_Interface; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -257,6 +280,9 @@ public partial class @PlayerControl: IInputActionCollection2, IDisposable
             @Inventory.started += instance.OnInventory;
             @Inventory.performed += instance.OnInventory;
             @Inventory.canceled += instance.OnInventory;
+            @Shop.started += instance.OnShop;
+            @Shop.performed += instance.OnShop;
+            @Shop.canceled += instance.OnShop;
         }
 
         private void UnregisterCallbacks(IInterfaceActions instance)
@@ -264,6 +290,9 @@ public partial class @PlayerControl: IInputActionCollection2, IDisposable
             @Inventory.started -= instance.OnInventory;
             @Inventory.performed -= instance.OnInventory;
             @Inventory.canceled -= instance.OnInventory;
+            @Shop.started -= instance.OnShop;
+            @Shop.performed -= instance.OnShop;
+            @Shop.canceled -= instance.OnShop;
         }
 
         public void RemoveCallbacks(IInterfaceActions instance)
@@ -288,5 +317,6 @@ public partial class @PlayerControl: IInputActionCollection2, IDisposable
     public interface IInterfaceActions
     {
         void OnInventory(InputAction.CallbackContext context);
+        void OnShop(InputAction.CallbackContext context);
     }
 }

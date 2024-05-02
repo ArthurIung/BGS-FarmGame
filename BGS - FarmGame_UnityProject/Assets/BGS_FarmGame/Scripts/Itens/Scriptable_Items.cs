@@ -8,4 +8,8 @@ public class Scriptable_Items : ScriptableObject
 {
     public string _id;
     public Sprite _itemIcon;
+
+    [Space]
+    public float shopPrice;
+
 }
