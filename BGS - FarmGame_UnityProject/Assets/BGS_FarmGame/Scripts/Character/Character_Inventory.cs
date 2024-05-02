@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.Rendering.Universal;
 
 public class Character_Inventory : BaseInitializer
 {
@@ -34,6 +35,11 @@ public class Character_Inventory : BaseInitializer
         _inventory.Add(newCell);
     }
 
+    public void RemoveItem(Scriptable_Items _i)
+    {
+        Debug.LogAssertion(_i._id);
+        _inventory.RemoveAll((x) => _i._id == x._itemReference._id);
+    }
 
 
 }

@@ -45,9 +45,17 @@ public class NPC_Interaction : BaseInitializer
         }
     }
 
-    internal void RemoveItem(Scriptable_Items selectedItem)
+    public void RemoveItem(Scriptable_Items selectedItem)
     {
         _items.RemoveAll(x=>x._item._id == selectedItem._id);
     }
+
+    public void InsertItem(Scriptable_Items selectedItem)
+    {
+        Shop newItem = new Shop();
+        newItem._item = selectedItem;
+        _items.Add(newItem);
+    }
+
 
 }

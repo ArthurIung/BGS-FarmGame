@@ -18,15 +18,17 @@ public class UIController : BaseInitializer
     [SerializeField] GameObject _prefab_ShopCell;
 
     [SerializeField] TextMeshProUGUI text_itemPrice;
+    [SerializeField] TextMeshProUGUI text_itemSellPrice;
+    [SerializeField] GameObject btn_sell;
 
     Scriptable_Items selectedItem;
 
-    bool _shopIsRevealed;
+    public bool _shopIsRevealed;
 
     Action OnShowShop;
     Action OnHideShop;
 
-    [SerializeField]BaseNPC _currentShopkeeper;
+    [SerializeField] BaseNPC _currentShopkeeper;
 
     #endregion
 
@@ -53,13 +55,14 @@ public class UIController : BaseInitializer
     {
 
         LogicController.Instance._playerControl.Interface.Inventory.performed += (x) => RevealInventory();
-        
+
 
         _inventoryIsRevealed = false;
-        _inventoryObject.gameObject.SetActive(false);
-
         _shopIsRevealed = false;
-        _shopObject.gameObject.SetActive(false);
+
+        LeanTween.scale(_shopObject.gameObject, Vector3.zero, 0f).setEase(LeanTweenType.easeInBack).setOnComplete(() => _shopObject.gameObject.SetActive(false)); ;
+        LeanTween.scale(_inventoryObject.gameObject, Vector3.zero, 0f).setEase(LeanTweenType.easeInBack).setOnComplete(() => _inventoryObject.gameObject.SetActive(false)); ;
+
 
         yield return StartCoroutine(base.Cor_Initialize());
     }
@@ -70,17 +73,21 @@ public class UIController : BaseInitializer
 
     public void RevealInventory()
     {
-        if(_inventoryIsRevealed)
+        if (_inventoryIsRevealed)
         {
             _inventoryIsRevealed = false;
-            _inventoryObject.gameObject.SetActive(false);
+            LeanTween.scale(_inventoryObject.gameObject, Vector3.zero, 0.2f).setEase(LeanTweenType.easeInBack).setOnComplete(() => _inventoryObject.gameObject.SetActive(false));
             OnHideInventory?.Invoke();
         }
         else
         {
             _inventoryIsRevealed = true;
 
-            _inventoryObject.gameObject.SetActive(true);
+            LeanTween.scale(_inventoryObject.gameObject, Vector3.one, 0.2f).setEase(LeanTweenType.easeOutBack).setOnStart(() =>
+            { 
+                _inventoryObject.gameObject.SetActive(true);
+                btn_sell.SetActive(false);
+            });
             OnShowInventory?.Invoke();
             RevealInventoryIcons();
         }
@@ -89,7 +96,7 @@ public class UIController : BaseInitializer
     public void HideInventory()
     {
         _inventoryIsRevealed = false;
-        _inventoryObject.gameObject.SetActive(false);
+        LeanTween.scale(_inventoryObject.gameObject, Vector3.zero, 0.2f).setEase(LeanTweenType.easeInBack).setOnComplete(() => _inventoryObject.gameObject.SetActive(false));
         OnHideInventory?.Invoke();
     }
 
@@ -101,9 +108,16 @@ public class UIController : BaseInitializer
 
         foreach (Character_Inventory.Cell _c in character_Inventory.Inventory)
         {
-            if(_c == null) continue;
+            if (_c == null) continue;
             GameObject cellReference = Instantiate(_prefab_inventoryCell, _parent_inventoryCell);
             cellReference.GetComponent<InventoryCell>().ConfigureCell(_c);
+
+            cellReference.transform.localScale = Vector3.zero;
+            LeanTween.scale(cellReference, Vector3.one, 0.2f).setEase(LeanTweenType.easeInOutBack).setDelay(0.1f).setOnComplete(() =>
+            {
+                cellReference.GetComponent<InventoryCell>().Anim_Idle();
+            }); ;
+
         }
 
         _textPlayerMoney.text = "Money: $" + LogicController.Instance.Player.CurrentMoney;
@@ -113,7 +127,6 @@ public class UIController : BaseInitializer
 
     #endregion
 
-
     #region Show Shop
 
     public void RevealShop(BaseNPC shopKeeper)
@@ -121,11 +134,16 @@ public class UIController : BaseInitializer
         if (_shopIsRevealed)
         {
 
+
             _currentShopkeeper = null;
 
             _shopIsRevealed = false;
-            _shopObject.gameObject.SetActive(false);
-            _inventoryObject.gameObject.SetActive(false);
+            LeanTween.scale(_shopObject.gameObject, Vector3.zero, 0.2f).setEase(LeanTweenType.easeInBack).setOnComplete(() => _shopObject.gameObject.SetActive(false));
+            LeanTween.scale(_inventoryObject.gameObject, Vector3.zero, 0.2f).setEase(LeanTweenType.easeInBack).setOnComplete(() =>
+            {
+                _inventoryObject.gameObject.SetActive(false);
+                btn_sell.SetActive(true);
+            }); 
             OnHideShop?.Invoke();
         }
         else
@@ -134,8 +152,12 @@ public class UIController : BaseInitializer
 
             _currentShopkeeper = shopKeeper;
 
-            _shopObject.gameObject.SetActive(true);
-            _inventoryObject.gameObject.SetActive(true);
+            LeanTween.scale(_shopObject.gameObject, Vector3.one, 0.2f).setEase(LeanTweenType.easeOutBack).setOnStart(() => _shopObject.gameObject.SetActive(true));
+            LeanTween.scale(_inventoryObject.gameObject, Vector3.one, 0.2f).setEase(LeanTweenType.easeOutBack).setOnStart(() =>
+            {
+                _inventoryObject.gameObject.SetActive(true);
+                btn_sell.SetActive(true);
+            });
             OnShowShop?.Invoke();
             RevealShopIcons(shopKeeper.NPCInteraction.Items);
             RevealInventoryIcons();
@@ -151,6 +173,13 @@ public class UIController : BaseInitializer
             if (_c == null) continue;
             GameObject cellReference = Instantiate(_prefab_ShopCell, _parent_ShopCell);
             cellReference.GetComponent<ShopCell>().ConfigureCell(_c);
+
+            cellReference.transform.localScale = Vector3.zero;
+            LeanTween.scale(cellReference, Vector3.one, 0.2f).setEase(LeanTweenType.easeInOutBack).setDelay(0.1f).setOnComplete(() =>
+            {
+                cellReference.GetComponent<ShopCell>().Anim_Idle();
+            });
+
         }
     }
 
@@ -160,8 +189,8 @@ public class UIController : BaseInitializer
         {
             _currentShopkeeper = null;
             _shopIsRevealed = false;
-            _shopObject.gameObject.SetActive(false);
-            _inventoryObject.gameObject.SetActive(false);
+            LeanTween.scale(_shopObject.gameObject, Vector3.zero, 0.2f).setEase(LeanTweenType.easeInBack).setOnComplete(() => _shopObject.gameObject.SetActive(false));
+            LeanTween.scale(_inventoryObject.gameObject, Vector3.zero, 0.2f).setEase(LeanTweenType.easeInBack).setOnComplete(() => _inventoryObject.gameObject.SetActive(false));
             OnHideShop?.Invoke();
         }
     }
@@ -170,13 +199,19 @@ public class UIController : BaseInitializer
     {
         selectedItem = _currentItem;
         text_itemPrice.text = "Price: $" + _currentItem.shopPrice;
+        text_itemSellPrice.text = "Price: $" + _currentItem.shopPrice/2;
     }
 
+
+    #endregion
+
+
+    #region Button Interactions
     public void Button_Buy()
     {
         if (selectedItem == null) return;
 
-        if(LogicController.Instance.Player.CurrentMoney - selectedItem.shopPrice >= 0)
+        if (LogicController.Instance.Player.CurrentMoney - selectedItem.shopPrice >= 0)
         {
             LogicController.Instance.Player.InsertMoney(-selectedItem.shopPrice);
             LogicController.Instance.Player.Inventory.InsertItem(selectedItem);
@@ -184,8 +219,25 @@ public class UIController : BaseInitializer
 
             RevealShopIcons(_currentShopkeeper.NPCInteraction.Items);
             RevealInventoryIcons();
+
+            selectedItem = null;
         }
     }
+
+    public void Button_Sell()
+    {
+        if (selectedItem == null) return;
+
+        LogicController.Instance.Player.InsertMoney(selectedItem.shopPrice / 2);
+        LogicController.Instance.Player.Inventory.RemoveItem(selectedItem);
+        _currentShopkeeper.NPCInteraction.InsertItem(selectedItem);
+
+        RevealShopIcons(_currentShopkeeper.NPCInteraction.Items);
+        RevealInventoryIcons();
+
+        selectedItem = null;
+    }
+
 
     #endregion
 
