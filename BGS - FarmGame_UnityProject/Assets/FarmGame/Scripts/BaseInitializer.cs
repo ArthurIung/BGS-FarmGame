@@ -4,15 +4,26 @@ using UnityEngine;
 
 public class BaseInitializer : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    /// <summary>
+    /// Boolean that show this class has been initialized
+    /// </summary>
+    bool isInitialized;
+
+    public bool IsInitialized
     {
-        
+        get 
+        {
+            if (!isInitialized)
+                Debug.LogWarning($"The gameObject {gameObject.name} has not been initialized and is trying to execute");
+
+            return isInitialized;
+        }
     }
 
-    // Update is called once per frame
-    void Update()
+
+    public virtual IEnumerator Cor_Initialize() 
     {
-        
+        yield return null;
+        isInitialized = true;
     }
 }
