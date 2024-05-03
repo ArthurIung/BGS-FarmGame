@@ -18,7 +18,7 @@ public class UIController : BaseInitializer
     [SerializeField] GameObject _prefab_ShopCell;
 
     [SerializeField] TextMeshProUGUI text_itemPrice;
-    [SerializeField] TextMeshProUGUI text_itemSellPrice;
+    [SerializeField] GameObject btn_buy;
     [SerializeField] GameObject btn_sell;
 
     Scriptable_Items selectedItem;
@@ -86,7 +86,7 @@ public class UIController : BaseInitializer
             LeanTween.scale(_inventoryObject.gameObject, Vector3.one, 0.2f).setEase(LeanTweenType.easeOutBack).setOnStart(() =>
             { 
                 _inventoryObject.gameObject.SetActive(true);
-                btn_sell.SetActive(false);
+                LeanTween.scale(btn_sell, Vector3.zero, 0);
             });
             OnShowInventory?.Invoke();
             RevealInventoryIcons();
@@ -142,7 +142,7 @@ public class UIController : BaseInitializer
             LeanTween.scale(_inventoryObject.gameObject, Vector3.zero, 0.2f).setEase(LeanTweenType.easeInBack).setOnComplete(() =>
             {
                 _inventoryObject.gameObject.SetActive(false);
-                btn_sell.SetActive(true);
+                
             }); 
             OnHideShop?.Invoke();
         }
@@ -156,8 +156,10 @@ public class UIController : BaseInitializer
             LeanTween.scale(_inventoryObject.gameObject, Vector3.one, 0.2f).setEase(LeanTweenType.easeOutBack).setOnStart(() =>
             {
                 _inventoryObject.gameObject.SetActive(true);
-                btn_sell.SetActive(true);
             });
+
+
+
             OnShowShop?.Invoke();
             RevealShopIcons(shopKeeper.NPCInteraction.Items);
             RevealInventoryIcons();
@@ -166,6 +168,11 @@ public class UIController : BaseInitializer
 
     void RevealShopIcons(List<NPC_Interaction.Shop> shopList)
     {
+
+        LeanTween.scale(btn_sell, Vector3.zero, 0.3f).setEase(LeanTweenType.easeInBack);
+        LeanTween.scale(btn_buy, Vector3.zero, 0.3f).setEase(LeanTweenType.easeInBack);
+
+
         LogicController.Instance.DestroyAllChildren(_parent_ShopCell);
 
         foreach (NPC_Interaction.Shop _c in shopList)
@@ -195,12 +202,25 @@ public class UIController : BaseInitializer
         }
     }
 
-    public void ShowPriceItem(Scriptable_Items _currentItem)
+    public void ClickOnShopCell(Scriptable_Items _currentItem)
     {
         selectedItem = _currentItem;
         text_itemPrice.text = "Price: $" + _currentItem.shopPrice;
-        text_itemSellPrice.text = "Price: $" + _currentItem.shopPrice/2;
+        LeanTween.scale(btn_buy, Vector3.one, 0.3f).setEase(LeanTweenType.easeOutBack);
+        LeanTween.scale(btn_sell, Vector3.zero, 0.3f).setEase(LeanTweenType.easeOutBack);
+
     }
+
+    public void ClickOnInventoryCell(Scriptable_Items _currentItem)
+    {
+
+        selectedItem = _currentItem;
+
+        text_itemPrice.text = "Sell Price: $" + _currentItem.shopPrice/2;
+        LeanTween.scale(btn_sell, Vector3.one, 0.3f).setEase(LeanTweenType.easeOutBack);
+        LeanTween.scale(btn_buy, Vector3.zero, 0.3f).setEase(LeanTweenType.easeOutBack);
+    }
+
 
 
     #endregion

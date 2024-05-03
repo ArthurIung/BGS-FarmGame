@@ -1,46 +1,43 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
+using UnityEngine.EventSystems;
 
-public class InventoryCell : MonoBehaviour
+public class ButtonAnimation : EventTrigger
 {
 
-    [SerializeField] Scriptable_Items _currentItem;
-    [SerializeField] Image _iconSprite;
-
-    public void ConfigureCell(Character_Inventory.Cell _c)
+    public override void OnPointerClick(PointerEventData eventData)
     {
-        _iconSprite.sprite = _c._itemReference._itemIcon;
-        _currentItem = Instantiate(_c._itemReference);
+        base.OnPointerClick(eventData);
+        Anim_Click();
     }
 
-    public void Button_SelectThisItem()
+    public override void OnPointerEnter(PointerEventData eventData)
     {
-        if(!LogicController.Instance._uiController._shopIsRevealed)
-            LogicController.Instance.Player.Equipment.ChangeEquipment(_currentItem);
-        else
-        {
-            LogicController.Instance._uiController.ClickOnInventoryCell(_currentItem);
-        }
+        base.OnPointerEnter(eventData);
+        Anim_Over();
     }
 
+    public override void OnPointerExit(PointerEventData eventData)
+    {
+        base.OnPointerExit(eventData);
+        Anim_Out();
+    }
 
-    #region Animations
 
     public void Anim_Idle()
     {
         LeanTween.cancel(gameObject);
         LeanTween.scale(gameObject, Vector3.one * 1.05f, 1f).setEase(LeanTweenType.easeInOutSine).setLoopPingPong();
-        LeanTween.rotateZ(gameObject, -10, 0f).setEase(LeanTweenType.easeInOutSine);
-        LeanTween.rotateZ(gameObject, 10, 1f).setLoopPingPong().setEase(LeanTweenType.easeInOutCubic);
+        LeanTween.rotateZ(gameObject, -5, 0f).setEase(LeanTweenType.easeInOutSine);
+        LeanTween.rotateZ(gameObject, 5, 1f).setLoopPingPong().setEase(LeanTweenType.easeInOutSine);
     }
 
     public void Anim_Over()
     {
         LeanTween.cancel(gameObject);
         LeanTween.rotateZ(gameObject, 0, 1f).setEase(LeanTweenType.easeInOutSine);
-        LeanTween.scale(gameObject, Vector3.one * 1.1f, 0.3f).setEase(LeanTweenType.easeInOutSine).setLoopPingPong();
+        LeanTween.scale(gameObject, Vector3.one * 1.1f, 0.6f).setEase(LeanTweenType.easeInOutSine).setLoopPingPong();
     }
 
     public void Anim_Out()
@@ -58,7 +55,4 @@ public class InventoryCell : MonoBehaviour
         });
 
     }
-
-    #endregion
-
 }

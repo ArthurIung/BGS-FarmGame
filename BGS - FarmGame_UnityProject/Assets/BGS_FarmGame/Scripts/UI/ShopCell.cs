@@ -18,7 +18,7 @@ public class ShopCell : MonoBehaviour
 
     public void Button_SelectThisItem()
     {
-        LogicController.Instance._uiController.ShowPriceItem(_currentItem);
+        LogicController.Instance._uiController.ClickOnShopCell(_currentItem);
     }
 
     #region Animations
