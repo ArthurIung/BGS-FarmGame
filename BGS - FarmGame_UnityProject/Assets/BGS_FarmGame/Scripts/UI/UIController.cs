@@ -49,6 +49,7 @@ public class UIController : BaseInitializer
     #endregion
 
     [Space, SerializeField] Transform _tutorialObject;
+    [SerializeField] CanvasGroup _canvasGroup;
 
     public override IEnumerator Cor_Initialize()
     {
@@ -64,6 +65,9 @@ public class UIController : BaseInitializer
 
 
         yield return StartCoroutine(base.Cor_Initialize());
+
+        LeanTween.alphaCanvas(_canvasGroup, 0, 0.3f).setDelay(0.5f);
+
     }
 
 
@@ -211,7 +215,8 @@ public class UIController : BaseInitializer
 
         selectedItem = _currentItem;
         text_itemPrice.text = "Price: $" + _currentItem.CurrentItem.shopPrice;
-        LeanTween.scale(btn_buy, Vector3.one, 0.3f).setEase(LeanTweenType.easeOutBack);
+        if (LogicController.Instance.Player.CurrentMoney - selectedItem.CurrentItem.shopPrice >= 0)
+            LeanTween.scale(btn_buy, Vector3.one, 0.3f).setEase(LeanTweenType.easeOutBack);
         LeanTween.scale(btn_sell, Vector3.zero, 0.3f).setEase(LeanTweenType.easeOutBack);
 
     }
@@ -241,8 +246,7 @@ public class UIController : BaseInitializer
     {
         if (selectedItem == null) return;
 
-        if (LogicController.Instance.Player.CurrentMoney - selectedItem.CurrentItem.shopPrice >= 0)
-        {
+        
             LogicController.Instance.Player.InsertMoney(-selectedItem.CurrentItem.shopPrice);
             LogicController.Instance.Player.Inventory.InsertItem(selectedItem.CurrentItem);
             _currentShopkeeper.NPCInteraction.RemoveItem(selectedItem.CurrentItem);
@@ -251,7 +255,8 @@ public class UIController : BaseInitializer
             RevealInventoryIcons();
 
             selectedItem = null;
-        }
+
+            text_itemPrice.text = "";
     }
 
     public void Button_Sell()
@@ -265,6 +270,8 @@ public class UIController : BaseInitializer
         RevealShopIcons(_currentShopkeeper.NPCInteraction.ShopItems);
         RevealInventoryIcons();
 
+        text_itemPrice.text = "";
+
         selectedItem = null;
     }
 
@@ -275,6 +282,7 @@ public class UIController : BaseInitializer
     public void HideTutorial()
     {
         LeanTween.scale(_tutorialObject.gameObject, Vector3.zero, 0.3f).setEase(LeanTweenType.easeOutBack);
+        LogicController.Instance._timeController.timeIsRunning = true;
     }
 
 }

@@ -122,7 +122,11 @@ public class TimeController : BaseInitializer
 
         while(true)
         {
-                if(currentTime >= 1)
+            if (timeIsRunning)
+            {
+
+
+                if (currentTime >= 1)
                 {
                     currentTime = 0;
 
@@ -133,9 +137,9 @@ public class TimeController : BaseInitializer
                 }
 
                 currentTime += (1f / totalTimeInDay) * Time.deltaTime;
-            
+
                 PassTime();
-            
+            }
 
             yield return null;
         }
