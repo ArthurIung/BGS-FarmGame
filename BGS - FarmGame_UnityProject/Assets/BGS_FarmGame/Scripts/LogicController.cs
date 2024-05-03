@@ -37,6 +37,7 @@ public class LogicController : BaseInitializer
     [SerializeField] List<BaseCharacter> _allnpcs = new List<BaseCharacter>();
 
     public UIController _uiController;
+    public TimeController _timeController;
 
     #endregion
 
@@ -64,7 +65,7 @@ public class LogicController : BaseInitializer
             yield return StartCoroutine(_allnpcs[i].Cor_Initialize());
         }
 
-
+        yield return StartCoroutine(_timeController.Cor_Initialize());
         yield return StartCoroutine(base.Cor_Initialize());
     }
 

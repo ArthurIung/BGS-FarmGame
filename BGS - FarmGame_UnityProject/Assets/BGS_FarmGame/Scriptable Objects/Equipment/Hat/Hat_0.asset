@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Hat_0
   m_EditorClassIdentifier: 
   _id: 0
-  _itemIcon: {fileID: 1120808457, guid: c32a8f47c9be3d8468f874b3d0e2d3de, type: 3}
+  _itemIcon: {fileID: 21300000, guid: 5f7925c56ea022b4eac2ffb0e5379a51, type: 3}
   shopPrice: 21
   _equipmentType_enum: 1
   _bodyPartSlot: 0

@@ -66,7 +66,6 @@ public class BasePlayer : BaseCharacter
 
     private void MovePosition(InputAction.CallbackContext context)
     {
-        Debug.Log(transform.name);
         _movementDirection = context.ReadValue<Vector2>();
         isMoving = true;
         OnStartMoving?.Invoke(Direction, isMoving);

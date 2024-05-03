@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 3871279575289144061}
   - component: {fileID: -1613856104381270809}
   - component: {fileID: 575428148378802098}
-  - component: {fileID: -5469378296473432960}
+  - component: {fileID: -4411196269817757866}
   m_Layer: 5
   m_Name: '[Cell] - Shop Cell'
   m_TagString: Untagged
@@ -70,7 +70,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 1992434901, guid: 85703ee0d52ea0d479ea35a4259a0b41, type: 3}
+  m_Sprite: {fileID: -1982749273, guid: 85703ee0d52ea0d479ea35a4259a0b41, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -92,6 +92,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 363a97c94947960409c82338388efb1b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _bgCell: {fileID: 3871279575289144061}
+  _selectedSprite: {fileID: 1992434901, guid: 85703ee0d52ea0d479ea35a4259a0b41, type: 3}
+  _unselectedSprite: {fileID: -1982749273, guid: 85703ee0d52ea0d479ea35a4259a0b41, type: 3}
   _currentItem: {fileID: 0}
   _iconSprite: {fileID: 2254136838770344341}
 --- !u!114 &575428148378802098
@@ -150,7 +153,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
---- !u!114 &-5469378296473432960
+--- !u!114 &-4411196269817757866
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -159,58 +162,27 @@ MonoBehaviour:
   m_GameObject: {fileID: 5616822161896582124}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d0b148fe25e99eb48b9724523833bab1, type: 3}
+  m_Script: {fileID: 11500000, guid: 476aed94f9f33a4418ff8e68d8919b09, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Delegates:
-  - eventID: 0
-    callback:
-      m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: -1613856104381270809}
-          m_TargetAssemblyTypeName: ShopCell, Assembly-CSharp
-          m_MethodName: Anim_Over
-          m_Mode: 1
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
-  - eventID: 1
-    callback:
-      m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: -1613856104381270809}
-          m_TargetAssemblyTypeName: ShopCell, Assembly-CSharp
-          m_MethodName: Anim_Out
-          m_Mode: 1
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
-  - eventID: 4
-    callback:
-      m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: -1613856104381270809}
-          m_TargetAssemblyTypeName: ShopCell, Assembly-CSharp
-          m_MethodName: Anim_Click
-          m_Mode: 1
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
+  m_Delegates: []
+  startAnimation: 0
+  idle_scaleDestination: {x: 1.05, y: 1.05, z: 1.05}
+  idle_durationTime: 1
+  idle_tweenScale: 16
+  idle_scaleValue: 5
+  idle_scaleTime: 2
+  idle_tweenRotation: 16
+  over_timeToStopRotation: 1
+  over_scaleDestination: {x: 1.1, y: 1.1, z: 1.1}
+  over_timeToScale: 0.6
+  over_tweenScale: 16
+  out_scaleDestination: {x: 1, y: 1, z: 1}
+  out_timeToScale: 0.3
+  out_tweenScale: 16
+  click_scaleDestination: {x: 0.8, y: 0.8, z: 0.8}
+  click_timeToScale: 0.15
+  click_tweenScale: 16
 --- !u!1 &6183763108400298346
 GameObject:
   m_ObjectHideFlags: 0
@@ -244,10 +216,10 @@ RectTransform:
   m_Father: {fileID: 2025355589515697711}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -37.5}
-  m_SizeDelta: {x: 211.466, y: 211.466}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: -24.198, y: -24.198}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &8377989018243184980
 CanvasRenderer:

@@ -26,6 +26,10 @@ public class BaseCharacter : BaseInitializer
     }
 
     [SerializeField]protected float _speed;
+    public float Speed
+    {
+        get { return _speed; }
+    }
 
     #endregion
 

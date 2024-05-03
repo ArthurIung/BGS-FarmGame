@@ -4,12 +4,7 @@ using UnityEngine;
 
 public class Character_Animation : BaseInitializer
 {
-    #region Private Variables
-
     [SerializeField] Animator _animator;
-
-    #endregion
-
 
     public void AnimateMovement(float xDirection, float yDirection)
     {
@@ -21,9 +16,6 @@ public class Character_Animation : BaseInitializer
     {
         AnimateBool("IsWalking", isWalking);
     }
-
-
-
 
     #region Animation Functions
 

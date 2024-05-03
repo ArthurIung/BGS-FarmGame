@@ -3,7 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
-using static Character_Equipment.EquipmentBodyPart;
 
 public class Character_Equipment : BaseInitializer
 {
@@ -20,6 +19,7 @@ public class Character_Equipment : BaseInitializer
 
         public BodyPart _bodyPart;
         public Scriptable_Items _equippedItem;
+        public InventoryCell _cellReference;
 
         public Animator animatorBodyPart;
 
@@ -38,25 +38,34 @@ public class Character_Equipment : BaseInitializer
 
     #region Equip Functions
 
-    public void ChangeEquipment(Scriptable_Items ItemToEquip)
+    public void ChangeEquipment(InventoryCell cellItem)
     {
 
-        Scriptable_Equipment equipment = (ItemToEquip as Scriptable_Equipment);
+        Scriptable_Equipment equipment = (cellItem.CurrentItem as Scriptable_Equipment);
 
         EquipmentBodyPart bodyPart = allBodyParts.Find(x => x._bodyPart == equipment._bodyPartSlot);
 
         if (bodyPart != null)
         {
-            if(bodyPart._equippedItem != null && bodyPart._equippedItem._id == ItemToEquip._id)
+            if(bodyPart._equippedItem != null && bodyPart._equippedItem._id == cellItem.CurrentItem._id) //Check if is clicking on the equipped item
             {
                 bodyPart._equippedItem = null;
+                bodyPart._cellReference = null;
                 bodyPart.animatorBodyPart.runtimeAnimatorController = null;
                 bodyPart.animatorBodyPart.GetComponent<SpriteRenderer>().sprite = null;
+                cellItem.UnselectThis();
             }
             else
             {
-                bodyPart._equippedItem = ItemToEquip;
+                if (bodyPart._cellReference != null)
+                    bodyPart._cellReference.UnselectThis();
+
+                bodyPart._equippedItem = cellItem.CurrentItem;
                 bodyPart.animatorBodyPart.runtimeAnimatorController = equipment._equipmentAnimator;
+
+                AnimateEquipment(_base.Direction, false);
+
+                bodyPart._cellReference = cellItem;
             }
         }
     }
@@ -68,7 +77,10 @@ public class Character_Equipment : BaseInitializer
         if (bodyPart != null)
         {
             bodyPart._equippedItem = null;
+            bodyPart._cellReference = null;
+            bodyPart.animatorBodyPart.runtimeAnimatorController = null;
             bodyPart.animatorBodyPart.GetComponent<SpriteRenderer>().sprite = null;
+            
         }
 
 
@@ -90,4 +102,16 @@ public class Character_Equipment : BaseInitializer
         }
     }
 
+    /// <summary>
+    /// Verify if the item is currently equipped in his respective body part
+    /// </summary>
+    /// <param name="currentItem">Item to verify</param>
+    /// <returns>True: Has this item equipped</returns>
+    public bool IsThisEquiped(Scriptable_Items currentItem)
+    {
+        Scriptable_Equipment equipment = (currentItem as Scriptable_Equipment);
+        EquipmentBodyPart bodyPart = allBodyParts.Find(x => x._bodyPart == equipment._bodyPartSlot);
+        return (bodyPart._equippedItem != null && bodyPart._equippedItem._id == currentItem._id);
+
+    }
 }
