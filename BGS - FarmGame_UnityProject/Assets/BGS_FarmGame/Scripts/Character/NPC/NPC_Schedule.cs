@@ -73,6 +73,7 @@ public class NPC_Schedule : BaseInitializer
                 _base.Animation.AnimateMovement(0, -1);
                 reachedDestination = true;
                 OnReachDestination?.Invoke();
+                _base.OnStartMoving.Invoke(new Vector2(0,-1), false);
             }
         }
         else
@@ -90,6 +91,7 @@ public class NPC_Schedule : BaseInitializer
         Vector3 directionVector = (_destination.position - transform.position).normalized;
 
         _base.Animation.AnimateMovement(directionVector.x, directionVector.y);
+        _base.OnStartMoving.Invoke(directionVector, true);
         OnMove?.Invoke();
     }
 

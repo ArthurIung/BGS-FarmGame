@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
+using static Character_Equipment.EquipmentBodyPart;
 
 public class Character_Equipment : BaseInitializer
 {
@@ -32,6 +33,13 @@ public class Character_Equipment : BaseInitializer
         _base = GetComponent<BaseCharacter>();
         _base.OnStartMoving += AnimateEquipment;
         _base.OnStopMoving += AnimateEquipment;
+
+        foreach (EquipmentBodyPart part in allBodyParts)
+        {
+            if (part._equippedItem == null) continue;
+            ForceEquipment(part);
+        }
+
         yield return StartCoroutine(base.Cor_Initialize());
 
     }
@@ -68,6 +76,13 @@ public class Character_Equipment : BaseInitializer
                 bodyPart._cellReference = cellItem;
             }
         }
+    }
+
+    public void ForceEquipment(EquipmentBodyPart bodyPart)
+    {
+        bodyPart.animatorBodyPart.runtimeAnimatorController = (bodyPart._equippedItem as Scriptable_Equipment)._equipmentAnimator;
+
+        AnimateEquipment(_base.Direction, false);
     }
 
     public void Unnequip(EquipmentBodyPart.BodyPart bodyPartToRemoveEquipment)

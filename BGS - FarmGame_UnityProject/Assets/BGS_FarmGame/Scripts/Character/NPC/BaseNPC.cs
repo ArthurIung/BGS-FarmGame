@@ -26,6 +26,7 @@ public class BaseNPC : BaseCharacter
     {
         yield return StartCoroutine(_nPCInteraction.Cor_Initialize());
         yield return StartCoroutine(_nPCSchedule.Cor_Initialize());
+        yield return StartCoroutine(Equipment.Cor_Initialize());
 
         yield return StartCoroutine(base.Cor_Initialize());
     }

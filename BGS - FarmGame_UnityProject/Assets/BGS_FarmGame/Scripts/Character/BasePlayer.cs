@@ -9,8 +9,7 @@ public class BasePlayer : BaseCharacter
     [Space]
     [SerializeField] Character_Inventory _characterInventory;
     public Character_Inventory Inventory { get { return _characterInventory; } }
-    [SerializeField] Character_Equipment _characterEquipment;
-    public Character_Equipment Equipment { get { return _characterEquipment; } }
+
 
     [SerializeField] float _currentMoney;
     public float CurrentMoney

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class LogicController : BaseInitializer
 {
@@ -49,6 +50,14 @@ public class LogicController : BaseInitializer
         _playerControl.Enable();
 
         StartCoroutine(Cor_Initialize());
+    }
+
+    private void Update()
+    {
+        if(Keyboard.current.escapeKey.wasPressedThisFrame)
+        {
+            Application.Quit();
+        }
     }
 
     #endregion

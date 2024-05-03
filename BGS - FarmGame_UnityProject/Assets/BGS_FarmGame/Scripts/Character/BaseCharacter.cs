@@ -13,6 +13,10 @@ public class BaseCharacter : BaseInitializer
         get { return _characterAnimation; }
     }
 
+    [SerializeField]protected Character_Equipment _characterEquipment;
+    public Character_Equipment Equipment { get { return _characterEquipment; } }
+
+
     #region Movement
     protected bool isMoving;
     [SerializeField]protected Vector2 _movementDirection;
